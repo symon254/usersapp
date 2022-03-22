@@ -1,75 +1,50 @@
 import {
-    GET_USER,
-    // GET_USERS
+    GET_USERS,
+    GET_USERS_FAIL,
+    CREATE_USER,
+    CREATE_USER_FAIL,
+    DELETE_USER,
 } from "./types";
-//import axios from "axios";
-//import http from "../Utils/api";
-
-// export const getUsers = () => async (dispatch) => {
-//     try {
-//         const res = await axios.get(
-//             "https://jsonplaceholder.typicode.com/users"
-//         );
-//         dispatch({
-//             type: GET_USER,
-//             payload: res.data,
-//         });
-//     } catch (err) {
-//         console.log(err);
-//     }
-// };
+import api from "../Utils/api";
 
 export const getUsers = () => async (dispatch) => {
     try {
-        const res = await fetch("https://jsonplaceholder.typicode.com/users", {
-            method: "GET",
-            headers: {
-                "Content-type": "application/json",
-            },
-        });
+        const res = await api.get("/posts");
+
         dispatch({
-            type: GET_USER,
+            type: GET_USERS,
             payload: res.data,
+        });
+    } catch (err) {
+        dispatch({
+            type: GET_USERS_FAIL,
+            payload: err.response,
+        });
+    }
+};
+export const createUser = (title) => async (dispatch) => {
+    try {
+        const res = await api.post("/posts", { title });
+
+        dispatch({
+            type: CREATE_USER,
+            payload: res.data,
+        });
+    } catch (err) {
+        dispatch({
+            type: CREATE_USER_FAIL,
+            payload: err.response,
+        });
+    }
+};
+export const deleteUser = (id) => async (dispatch) => {
+    try {
+        await api.delete(`/posts/${id}`);
+        dispatch({
+            type: DELETE_USER,
+            payload: { id },
         });
     } catch (err) {
         console.log(err);
     }
 };
-
-// export const getUsers = () => async (dispatch) => {
-//     try {
-//         const res = await http.get("/users");
-//         dispatch({
-//             type: GET_USER,
-//             payload: res.data,
-//         });
-//     } catch (err) {
-//         console.log(err);
-//     }
-// };
-
-//const API_URL = "https://jsonplaceholder.typicode.com/users";
-
-// export const getList = () => {
-//     try {
-//         return async (dispatch) => {
-//             const result = await fetch(
-//                 "https://jsonplaceholder.typicode.com/users",
-//                 {
-//                     method: "GET",
-//                     headers: {
-//                         "Content-type": "application/json",
-//                     },
-//                 }
-//             );
-//             const json = await result.json();
-
-//             dispatch({
-//                 type: GET_USERS,
-//                 payload: json.data,
-//             });
-//         };
-//     } catch (err) {
-//         console.log(err);
-//     }
-// };
