@@ -9,14 +9,13 @@ function AddPosts() {
     const dispatch = useDispatch();
 
     const initialUserState = {
-        id: null,
         title: "",
     };
     const [user, setUser] = useState(initialUserState);
     const [setSubmitted] = useState(false);
 
-    const handleInputChange = (event) => {
-        const { name, value } = event.target;
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
         setUser({ ...user, [name]: value });
     };
     const saveUser = () => {
@@ -24,14 +23,13 @@ function AddPosts() {
         dispatch(createUser(title))
             .then((data) => {
                 setUser({
-                    id: data.id,
                     title: data.title,
                 });
                 setSubmitted(true);
                 console.log(data);
             })
-            .catch((e) => {
-                console.log(e);
+            .catch((err) => {
+                console.log(err);
             });
     };
 
@@ -46,51 +44,49 @@ function AddPosts() {
     }
 
     return (
-        <div>
-            <Form onSubmit={handleSubmit}>
-                <Modal
-                    show={show}
-                    onHide={handleClose}
-                    backdrop="static"
-                    keyboard={false}
-                >
-                    <Modal.Header closeButton>
-                        <Modal.Title>Add User</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        add a User!
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="title"
-                            required
-                            value={user.title}
-                            onChange={handleInputChange}
-                            name="name"
-                        />
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="danger" onClick={handleClose}>
-                            Close
-                        </Button>
-                        <Button variant="warning" onClick={saveUser}>
-                            Save Changes
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
-
-                <div>
-                    <Button
-                        onClick={handleShow}
-                        style={{ float: "left" }}
-                        variant="primary"
-                    >
-                        Add
+        <Form onSubmit={handleSubmit}>
+            <Modal
+                show={show}
+                onHide={handleClose}
+                backdrop="static"
+                keyboard={false}
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>Add User</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    add a User!
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="title"
+                        required
+                        value={user.title}
+                        onChange={handleInputChange}
+                        name="name"
+                    />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="danger" onClick={handleClose}>
+                        Close
                     </Button>
-                </div>
-                <br />
-            </Form>
-        </div>
+                    <Button variant="warning" onClick={saveUser}>
+                        Save Changes
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+            <div>
+                <Button
+                    onClick={handleShow}
+                    style={{ float: "left" }}
+                    variant="primary"
+                >
+                    Add
+                </Button>
+            </div>
+            <br />
+        </Form>
     );
 }
 
