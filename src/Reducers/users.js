@@ -7,7 +7,7 @@ import {
     DELETE_USER,
 } from "../Actions/types";
 
-const initialState = { users: [] };
+const initialState = { posts: [] };
 
 export const userListReducer = (state = initialState, action) => {
     const { type, payload } = action;
