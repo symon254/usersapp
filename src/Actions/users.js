@@ -9,7 +9,7 @@ import api from "../Utils/api";
 
 export const getUsers = () => async (dispatch) => {
     try {
-        const res = await api.get("/posts");
+        const res = await api.get("/posts?_limit=10");
 
         dispatch({
             type: GET_USERS,
@@ -22,9 +22,9 @@ export const getUsers = () => async (dispatch) => {
         });
     }
 };
-export const createUser = (title) => async (dispatch) => {
+export const createUser = (title, description) => async (dispatch) => {
     try {
-        const res = await api.post("/posts", { title });
+        const res = await api.post("/posts", { title, description });
 
         dispatch({
             type: CREATE_USER,
