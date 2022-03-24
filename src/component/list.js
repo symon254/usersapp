@@ -1,22 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUsers } from "../Actions/users";
+import { getUsers, deleteUser } from "../Actions/users";
 import { Button, Form, Table } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
 
-function List() {
+function List(props) {
     const dispatch = useDispatch();
 
-    // const removeUser = () => {
-    //     dispatch(deleteUser(currentUser.id))
-    //         .then(() => {
-    //             props.history.push("/Users");
-    //         })
-    //         .catch((e) => {
-    //             console.log(e);
-    //         });
-    // };
+    const [currentUser] = useState(null);
+
+    const removeUser = () => {
+        dispatch(deleteUser(currentUser.id))
+            .then(() => {
+                props.history.push("/posts");
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+    };
 
     const userList = useSelector((state) => state.userList);
     const { users } = userList;
@@ -70,7 +72,10 @@ function List() {
                                                 </Button>
                                             </td>
                                             <td>
-                                                <Button variant="danger">
+                                                <Button
+                                                    variant="danger"
+                                                    onClick={removeUser}
+                                                >
                                                     remove
                                                 </Button>
                                             </td>
