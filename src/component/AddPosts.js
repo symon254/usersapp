@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { createUser } from "../Actions/users";
+import { createPost } from "../Actions/posts";
 import { Modal, Button, Form } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
@@ -8,21 +8,21 @@ import "../App.css";
 function AddPosts() {
     const dispatch = useDispatch();
 
-    const initialUserState = {
+    const initialPostState = {
         title: "",
     };
-    const [user, setUser] = useState(initialUserState);
+    const [post, setPost] = useState(initialPostState);
     const [setSubmitted] = useState(false);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setUser({ ...user, [name]: value });
+        setPost({ ...post, [name]: value });
     };
-    const saveUser = () => {
-        const { title } = user;
-        dispatch(createUser(title))
+    const savePost = () => {
+        const { title } = post;
+        dispatch(createPost(title))
             .then((data) => {
-                setUser({
+                setPost({
                     title: data.title,
                 });
                 setSubmitted(true);
@@ -52,25 +52,25 @@ function AddPosts() {
                 keyboard={false}
             >
                 <Modal.Header closeButton>
-                    <Modal.Title>Add User</Modal.Title>
+                    <Modal.Title>Add Post</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    add a User!
+                    add a Post!
                     <input
                         type="text"
                         className="form-control"
                         id="title"
                         required
-                        value={user.title}
+                        value={post.title}
                         onChange={handleInputChange}
-                        name="name"
+                        name="title"
                     />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="danger" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="warning" onClick={saveUser}>
+                    <Button variant="warning" onClick={savePost}>
                         Save Changes
                     </Button>
                 </Modal.Footer>
