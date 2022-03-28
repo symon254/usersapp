@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUsers, deleteUser } from "../Actions/users";
+import { getPosts, deletePost } from "../Actions/posts";
 import { Button, Form, Table } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
 
 function List(props) {
     const dispatch = useDispatch();
 
-    const [currentUser] = useState(null);
+    const [currentPost] = useState(null);
 
-    const removeUser = () => {
-        dispatch(deleteUser(currentUser.id))
+    const removePost = () => {
+        dispatch(deletePost(currentPost.id))
             .then(() => {
                 props.history.push("/posts");
             })
@@ -20,8 +21,8 @@ function List(props) {
             });
     };
 
-    const userList = useSelector((state) => state.userList);
-    const { users } = userList;
+    const postList = useSelector((state) => state.postList);
+    const { posts } = postList;
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -29,10 +30,10 @@ function List(props) {
     }
 
     useEffect(() => {
-        dispatch(getUsers());
+        dispatch(getPosts());
     }, [dispatch]);
 
-    console.log(users);
+    console.log(posts);
 
     return (
         <div>
@@ -50,31 +51,35 @@ function List(props) {
                 <br />
                 <br />
                 <div>
-                    <h4>User List</h4>
-
+                    <h4>Post List</h4>
                     <Table>
                         <thead>
                             <tr>
-                                <th>users</th>
+                                <th>posts</th>
                                 <th>edit</th>
                                 <th>remove</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {users &&
-                                users.map((users, index) => {
+                            {posts &&
+                                posts.map((posts, index) => {
                                     return (
                                         <tr key={index}>
-                                            <td>{users.title}</td>
+                                            <td>{posts.title}</td>
                                             <td>
                                                 <Button variant="success">
-                                                    edit
+                                                    <Link
+                                                        to={`/posts/${currentPost.id}`}
+                                                        className="badge badge-warning"
+                                                    >
+                                                        Edit
+                                                    </Link>
                                                 </Button>
                                             </td>
                                             <td>
                                                 <Button
                                                     variant="danger"
-                                                    onClick={removeUser}
+                                                    onClick={removePost}
                                                 >
                                                     remove
                                                 </Button>
