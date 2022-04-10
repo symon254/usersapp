@@ -1,18 +1,42 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { createPost } from "../Actions/posts";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updatePost, getPost } from "../Actions/posts";
 import { Modal, Button, Form } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
 
-function AddPosts({ show, onHide, refreshData }) {
+function EditTest({ show, onHide, refreshData, currentData }) {
+    const { id } = useParams();
+
     const dispatch = useDispatch();
 
     const [post, setPost] = useState("");
 
+    const posts = useSelector((state) => state.postList);
+
+    useEffect(() => {
+        const { post } = currentData;
+        setPost(post);
+    }, [currentData]);
+
+
+    console.log(posts); 
+    //console.log({ post: post });
+
+    //  const updatePosts = () => {
+    //     dispatch(updatePost(post.id, post))
+    //         .then((res) => {
+    //             console.log(res);
+    //         })
+    //         .catch((err) => {
+    //             console.log(err);
+    //         });
+    // };
+
     function handleSubmit(e) {
         e.preventDefault();
-        dispatch(createPost(post)).then((res) => {
+        dispatch(updatePost(currentData.id, currentData)).then((res) => {
             refreshData();
             console.log(res);
         });
@@ -21,11 +45,11 @@ function AddPosts({ show, onHide, refreshData }) {
     return (
         <Modal show={show} onHide={onHide} backdrop="static" keyboard={false}>
             <Modal.Header closeButton>
-                <Modal.Title>Add Post</Modal.Title>
+                <Modal.Title> Edit User</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form id="addPost">
-                    add a Post!
+                    edit a user!
                     <input
                         type="text"
                         className="form-control"
@@ -41,12 +65,12 @@ function AddPosts({ show, onHide, refreshData }) {
                 <Button variant="danger" onClick={onHide}>
                     Close
                 </Button>
-                <Button variant="warning" form="addPost" onClick={handleSubmit}>
-                    Save Changes
+                <Button variant="primary" form="addPost" onClick={handleSubmit}>
+                    update Changes
                 </Button>
             </Modal.Footer>
         </Modal>
     );
 }
 
-export default AddPosts;
+export default EditTest;

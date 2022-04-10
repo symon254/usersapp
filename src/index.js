@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
+//import List from "./component/List";
 //import EditPosts from "./component/EditPosts";
 //import AddTest from "./component/AddTest";
 //import AddPosts from "./component/AddPosts";

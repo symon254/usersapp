@@ -25,8 +25,8 @@ function App() {
                 <div className="container mt-3">
                     <Routes>
                         <Route path={"/posts"} element={<List />} />
-                        <Route path="/add" element={<AddPosts />} />
-                        <Route path="/posts/:id" element={<EditPosts />} />
+                        {/* <Route path="/add" element={<AddPosts />} />
+                        <Route path="/posts/:id" element={<EditPosts />} /> */}
                     </Routes>
                 </div>
             </Router>

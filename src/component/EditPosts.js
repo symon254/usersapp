@@ -1,35 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { updatePost, deletePost, getPost } from "../Actions/posts";
+import { updatePost, getPost } from "../Actions/posts";
 
 const EditPosts = (props) => {
     const { id } = useParams();
 
-    const initialPostState = {
-        id: null,
-        title: "",
-    };
-    const [currentPost, setCurrentPost] = useState(initialPostState);
+    const [currentPost, setCurrentPost] = useState("");
     const [message, setMessage] = useState("");
     const posts = useSelector((state) => state.posts);
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(getPost(id));
-        console.log(id);
-    }, [dispatch, id]);
+    // useEffect(() => {
+    //     dispatch(getPost(id));
+    //     console.log(id);
+    // }, [dispatch, id]);
     useEffect(() => {
         if (posts) {
             setCurrentPost({ ...posts });
         }
     }, [posts]);
-
-    const handleInputChange = (event) => {
-        const { name, value } = event.target;
-        setCurrentPost({ ...currentPost, [name]: value });
-    };
 
     const updateContent = () => {
         dispatch(updatePost(currentPost.id, currentPost))
@@ -41,15 +32,7 @@ const EditPosts = (props) => {
                 console.log(e);
             });
     };
-    const removePost = () => {
-        dispatch(deletePost(currentPost.id))
-            .then(() => {
-                props.history.push("/posts");
-            })
-            .catch((e) => {
-                console.log(e);
-            });
-    };
+
     return (
         <div>
             {currentPost ? (
@@ -63,18 +46,12 @@ const EditPosts = (props) => {
                                 className="form-control"
                                 id="title"
                                 name="title"
-                                value={currentPost.title || ""}
-                                onChange={handleInputChange}
+                                value={currentPost}
+                                onChange={(e) => setCurrentPost(e.target.value)}
                             />
                         </div>
                     </form>
 
-                    <button
-                        className="badge badge-danger mr-2"
-                        onClick={removePost}
-                    >
-                        Delete
-                    </button>
                     <button
                         type="submit"
                         className="badge badge-success"

@@ -12,7 +12,7 @@ import api from "../Utils/api";
 
 export const getPosts = () => async (dispatch) => {
     try {
-        const res = await api.get("/posts?_limit=10");
+        const res = await api.get("/users");
 
         dispatch({
             type: GET_POSTS,
@@ -28,7 +28,7 @@ export const getPosts = () => async (dispatch) => {
 
 export const getPost = (id, data) => async (dispatch) => {
     try {
-        const res = await api.get(`/posts/${id}`, data);
+        const res = await api.get(`/users/${id}`, data);
         dispatch({
             type: GET_POST,
             payload: res.data,
@@ -41,14 +41,15 @@ export const getPost = (id, data) => async (dispatch) => {
     }
 };
 
-export const createPost = (title, body) => async (dispatch) => {
+export const createPost = (name) => async (dispatch, resolve) => {
     try {
-        const res = await api.post("/posts", { title, body });
+        const res = await api.post("/users", { name });
 
         dispatch({
             type: CREATE_POST,
-            payload: res.data,
+            payload: res,
         });
+        resolve(res);
     } catch (err) {
         dispatch({
             type: CREATE_POST_FAIL,
@@ -59,7 +60,7 @@ export const createPost = (title, body) => async (dispatch) => {
 
 export const deletePost = (id) => async (dispatch) => {
     try {
-        await api.delete(`/posts/${id}`);
+        await api.delete(`/users/${id}`);
         dispatch({
             type: DELETE_POST,
             payload: { id },
@@ -71,10 +72,10 @@ export const deletePost = (id) => async (dispatch) => {
 
 export const updatePost = (id, data) => async (dispatch) => {
     try {
-        const res = await api.put(`/posts/${id}`, data);
+        const res = await api.put(`/users/${id}`, data);
         dispatch({
             type: UPDATE_POST,
-            payload: res.data,
+            payload: res.data.data,
         });
         console.log(res);
     } catch (err) {
@@ -84,3 +85,30 @@ export const updatePost = (id, data) => async (dispatch) => {
         });
     }
 };
+
+export const findName = (name) => async (dispatch) => {
+    try {
+        const res = await api.get(`/users?name=${name}`);
+        dispatch({
+            type: GET_POSTS,
+            payload: res.data,
+        });
+    } catch (err) {
+        dispatch({
+            type: GET_POSTS_FAIL,
+            payload: err.response,
+        });
+    }
+};
+
+// const updated = () => ({
+//     type: UPDATE_POST,
+// });
+// export const updatePost = (id, data) => {
+//     return function (dispatch) {
+//         api.put(`/users/${id}`, data).then((res) => {
+//             console.log(res);
+//             dispatch(updated());
+//         });
+//     };
+// };
